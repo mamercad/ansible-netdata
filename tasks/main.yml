@@ -33,3 +33,12 @@
 - name: bad md5sum
   debug: msg="bad md5sum"
   failed_when: foo.stdout != bar.stdout
+
+- name: configure
+  shell: ./configure chdir=/tmp/{{ netdata.tarball.basename_noext }} creates=/tmp/{{ netdata.tarball.basename_noext }}/config.log
+
+- name: make
+  shell: make chdir=/tmp/{{ netdata.tarball.basename_noext }} creates=/tmp/{{ netdata.tarball.basename_noext }}/src/netdata
+
+- name: make install
+  shell: make install chdir=/tmp/{{ netdata.tarball.basename_noext }} creates=/usr/local/sbin/netdata
