@@ -1,0 +1,35 @@
+---
+# tasks file for ansible-netdata
+
+- name: fetch tarball
+  get_url: url={{ netdata.tarball.url }} dest=/tmp
+
+- name: fetch md5
+  get_url: url={{ netdata.md5sum.url }} dest=/tmp
+
+- name: extract tarball
+  unarchive: src=/tmp/{{ netdata.tarball.basename }} dest=/tmp copy=no creates=/tmp/{{ netdata.tarball.basename_noext }}/aclocal.m4
+
+- name: get tarball md5sum
+  shell: md5sum {{ netdata.tarball.basename }} | awk '{print $1}' chdir=/tmp
+  register: foo
+  changed_when: false
+
+- name: get published md5sum
+  shell: cat {{ netdata.md5sum.basename }} | awk '{print $1}' chdir=/tmp
+  register: bar
+  changed_when: false
+
+- name: foo
+  debug: msg="{{ foo }}"
+
+- name: bar
+  debug: msg="{{ bar }}"
+
+- name: good md5sum
+  debug: msg="good md5sum"
+  when: foo.stdout == bar.stdout
+
+- name: bad md5sum
+  debug: msg="bad md5sum"
+  failed_when: foo.stdout != bar.stdout

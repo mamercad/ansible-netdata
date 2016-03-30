@@ -1,0 +1,11 @@
+---
+# vars file for ansible-netdata
+
+netdata:
+  tarball:
+    url: http://firehol.org/download/netdata/releases/v1.0.0/netdata-1.0.0.tar.bz2
+    basename: netdata-1.0.0.tar.bz2
+    basename_noext: netdata-1.0.0
+  md5sum:
+    url: http://firehol.org/download/netdata/releases/v1.0.0/netdata-1.0.0.tar.bz2.md5
+    basename: netdata-1.0.0.tar.bz2.md5
